@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# This repo holds CONFIG; the machinery is the pinned .harness submodule,
+# tested by its own CI. What is worth checking here is this repo's content,
+# and that the pinned harness still resolves against it.
+jobs:
+  validate:
+    name: Validate config
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Secret lint
+        env:
+          AGENT_CONFIG_ROOT: ${{ github.workspace }}
+        run: ./.harness/bin/lint-secrets.sh
+
+      - name: Skill structure
+        env:
+          AGENT_CONFIG_ROOT: ${{ github.workspace }}
+        run: ./.harness/bin/validate-skills.sh
+
+      - name: Registry resolves against this repo, not the harness
+        env:
+          AGENT_CONFIG_ROOT: ${{ github.workspace }}
+        run: |
+          # The failure this guards is silent: if AGENT_CONFIG_ROOT is ignored,
+          # the harness reads its own example domains and everything looks fine.
+          . ./.harness/lib/common.sh
+          domains=$(list_domains | tr '\n' ' ')
+          echo "domains: $domains"
+          case "$domains" in
+            *myproject*) ;;
+            *) echo "::error::registry did not resolve to this repo's domains"; exit 1 ;;
+          esac
