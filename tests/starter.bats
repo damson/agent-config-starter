@@ -27,9 +27,19 @@ setup() {
 
 @test "gitignore directory patterns are anchored with a leading slash" {
   # Unanchored dir patterns match at any depth and silently swallow new
-  # files; every committed pattern must start with / (or be a comment).
-  run grep -vE '^(/|#|$)' "$REPO_ROOT/.gitignore"
-  [ "$status" -ne 0 ]
+  # files. Only directory patterns (trailing /) must be anchored; plain
+  # file globs are fine. A missing .gitignore is its own failure, not a
+  # vacuous pass.
+  [ -f "$REPO_ROOT/.gitignore" ]
+  run grep -E '/$' "$REPO_ROOT/.gitignore"
+  unanchored=""
+  while IFS= read -r line; do
+    case "$line" in
+      /*|\#*|"") : ;;
+      *) unanchored="$unanchored $line" ;;
+    esac
+  done <<< "$output"
+  [ -z "$unanchored" ]
 }
 
 @test "every workspace directory is a registered domain" {
