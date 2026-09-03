@@ -2,6 +2,7 @@
 
 [![ci](https://github.com/damson/agent-config-starter/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/damson/agent-config-starter/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/github/license/damson/agent-config-starter)](LICENSE)
+[![Coverage](https://codecov.io/gh/damson/agent-config-starter/graph/badge.svg)](https://codecov.io/gh/damson/agent-config-starter)
 
 **Your agent instructions, managed like code.**
 
@@ -27,11 +28,13 @@ just check    # health-check every domain and link
 just test     # secret lint + skill structure
 ```
 
-> ⚠️ **Before `just setup`:** it points `~/.claude/CLAUDE.md` and
-> `~/.claude/preferences.md` at this repo. An existing regular file there is
-> moved aside to a timestamped `.bak` (and the run says so); a symlink owned
-> by another config repo makes setup refuse rather than silently take over.
-> Your old config survives either way, but read the output.
+> ⚠️ **Before `just setup`:** it points your global Claude config at this
+> repo: `~/.claude/CLAUDE.md`, `~/.claude/preferences.md`,
+> `~/.claude/statusline.sh` and the two identity files, plus your skills. An
+> existing regular file there is moved aside to a timestamped `.bak` (and the
+> run says so); a symlink owned by another config repo makes setup refuse
+> rather than silently take over. Your old config survives either way, but
+> read the output.
 
 Scoring needs the Claude CLI and an API key. Everything else runs without one:
 
@@ -54,6 +57,8 @@ what to replace and why:
   and to you. Templates only; your actual personality is bring-your-own.
 - **CI that means it**: secret lint, skill structure, and a check that the
   registry resolves against *this* repo rather than the engine's examples.
+  The coverage badge reports how much of the vendored engine those checks
+  exercise.
 
 ## What you edit
 
