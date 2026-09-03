@@ -1,0 +1,34 @@
+# CodeRabbit configuration — https://docs.coderabbit.ai/reference/configuration
+#
+# Aligned with the sibling repos (agent-config-harness, hard-won-skills,
+# skill-lint): chill profile, human-owned high-level summary, gitflow base
+# branch.
+
+language: "en-US"
+
+reviews:
+  profile: "chill"
+  high_level_summary: false
+  poem: false
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    base_branches:
+      - "develop"
+  path_instructions:
+    - path: "workspace/**"
+      instructions: |
+        Shipped example domain: real structure, placeholder content. Do not
+        flag placeholder content as incomplete. AGENTS.md here is a symlink
+        to CLAUDE.md by design; a change turning it into a regular file is a
+        bug worth flagging loudly.
+    - path: "user-pers/**"
+      instructions: |
+        Sanitized identity templates. Unfilled sections are deliberate; flag
+        only additions that look like real personal data, which must never
+        be committed here.
+    - path: "tests/**"
+      instructions: |
+        bats conventions: a `[[ ]]` assertion is inert unless it is the last
+        line of its test. The engine's own behaviour is tested upstream in
+        agent-config-harness; tests here cover only this template's wiring.
