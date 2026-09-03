@@ -27,6 +27,12 @@ jobs:
           AGENT_CONFIG_ROOT: ${{ github.workspace }}
         run: ./.harness/bin/lint-secrets.sh
 
+      - name: Install bats
+        run: sudo apt-get update -q && sudo apt-get install -y -q bats
+
+      - name: Template invariants
+        run: bats tests/
+
       - name: Skill structure
         env:
           AGENT_CONFIG_ROOT: ${{ github.workspace }}
