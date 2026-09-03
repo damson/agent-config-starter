@@ -12,6 +12,13 @@ concurrency:
 # This repo holds CONFIG; the machinery is the pinned .harness submodule,
 # tested by its own CI. What is worth checking here is this repo's content,
 # and that the pinned harness still resolves against it.
+#
+# There is deliberately no coverage job. Coverage reports what share of a
+# repository's own source its tests reach, and the only source here is one CI
+# helper: the suite exercises the submodule's scripts, which are measured in
+# the repo that owns them. Pointed at this tree, a coverage service has no
+# files to attribute the result to and reports an error at 0%, which is worse
+# than no badge.
 jobs:
   validate:
     name: Validate config

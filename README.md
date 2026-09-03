@@ -2,7 +2,6 @@
 
 [![ci](https://github.com/damson/agent-config-starter/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/damson/agent-config-starter/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/github/license/damson/agent-config-starter)](LICENSE)
-[![Coverage](https://codecov.io/gh/damson/agent-config-starter/graph/badge.svg)](https://codecov.io/gh/damson/agent-config-starter)
 
 **Your agent instructions, managed like code.**
 
@@ -57,8 +56,8 @@ what to replace and why:
   and to you. Templates only; your actual personality is bring-your-own.
 - **CI that means it**: secret lint, skill structure, and a check that the
   registry resolves against *this* repo rather than the engine's examples.
-  The coverage badge reports how much of the vendored engine those checks
-  exercise.
+  There is no coverage badge on purpose: your config is the content here, and
+  the engine those checks exercise is measured in its own repo.
 
 ## What you edit
 
