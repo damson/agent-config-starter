@@ -1,0 +1,20 @@
+# Watch the vendored harness so its pin stops going stale in silence.
+#
+# `.harness` is a submodule pinned to an exact commit, and nothing watched it:
+# it sat three weeks and five harness releases behind while this repo's CI kept
+# passing, because a stale pin is a working pin. The harness promotes to its
+# default branch only when it cuts a release, so one update here is one release
+# there rather than a stream of noise.
+#
+# The pull request it opens is a proposal, not an upgrade: this repo's own CI
+# runs the harness scripts out of that submodule, so a bump that breaks them
+# fails the pull request rather than the next person's clone.
+version: 2
+updates:
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    # This repo integrates on develop; main carries releases.
+    target-branch: "develop"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 1
