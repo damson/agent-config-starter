@@ -69,9 +69,14 @@ what to replace and why:
 | `user-dev/skills/` | Your own skills, each held to the structural checks |
 | `user-pers/` | Personal identity files, scored on the same rubric |
 
-Everything under `.harness/` is the engine, pinned to a reviewed commit. To
-update it: bump the submodule, run `just test-harness`, commit the new pin.
-Never edit it in place; the change is lost on the next update.
+Everything under `.harness/` is the engine, pinned to a reviewed commit. You do
+not have to watch it: the harness promotes to its default branch only when it
+cuts a release, and Dependabot opens a pull request here for each one. Your CI
+runs the harness scripts out of that submodule, so a bump that breaks them fails
+the pull request rather than your next clone. Merging it stays your call.
+
+To do it by hand: bump the submodule, run `just test-harness`, commit the new
+pin. Never edit it in place; the change is lost on the next update.
 
 ## The rules that keep this working
 

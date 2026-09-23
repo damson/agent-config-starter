@@ -55,3 +55,23 @@ setup() {
   done
   [ -z "$missing" ]
 }
+
+@test "something watches the vendored harness pin" {
+  # The pin is a commit, so a stale one is indistinguishable from a current one:
+  # CI passes either way. This one went three weeks and five harness releases
+  # behind before a person noticed.
+  local cfg="$REPO_ROOT/.github/dependabot.yml"
+  [ -f "$cfg" ]
+  run python3 -c "
+import sys, yaml
+u = yaml.safe_load(open(sys.argv[1]))['updates']
+sub = [x for x in u if x['package-ecosystem'] == 'gitsubmodule']
+if not sub:
+    print('nothing watches the submodule'); sys.exit(1)
+# Against develop: a pull request opened against main would bypass the branch
+# this repo integrates on, and its CI, on the way in.
+if sub[0].get('target-branch') != 'develop':
+    print('updates target', sub[0].get('target-branch'), 'rather than develop'); sys.exit(1)
+" "$cfg"
+  [ "$status" -eq 0 ]
+}
